@@ -4,11 +4,11 @@ Lando Example Setup
 This is an example setup for local development using Lando.
 In this example we create a LAMP stack that uses different subdomains and subdirectories for different elements of the project.
 The stack used for the project in this example was:
-1. Laravel backend api - app.laravel.lndo.site/api
-2. Angular frontend - app.laravel.lndo.site
-3. Wordpress on subdomain - wp.laravel.lndo.site
-
-The configuration for the above can be viewed in config/default.conf
+1. Laravel backend api - **app.laravel.lndo.site/api**
+2. Angular frontend - **app.laravel.lndo.site**
+3. Wordpress on subdomain - **wp.laravel.lndo.site**
+4. Laravel websockets - **ws-laravel.lndo.site**
+The configuration for the above can be viewed in **config/default.conf**
 
 Windows & WSL2
 --------------
@@ -30,8 +30,6 @@ For WSL2, make sure your project is set up in **~** or **/home/yourusername** di
 
 Mac and Ubuntu should be fine, although not tested. 
 
-* [Apache Service](https://docs.devwithlando.io/tutorials/apache.html)
-
 Get Going
 --------------
 First create a docroot directory in the root of this project (where .lando.yml lives)
@@ -50,7 +48,7 @@ Feel free to remove this. For that matter, feel free to chop and change the .lan
 
 Run Lando:
 ```bash
- name: laravel
+name: laravel
 services:
   phpmyadminservice: # run phpmyadmin
     type: phpmyadmin
@@ -118,11 +116,11 @@ lando --help
 
 Note: red urls
 --------------
-Firstly, if you're using Windows and you get red urls, just add the urls to your hosts file and you'll be golden. Google it. 
+Firstly, if you're using Windows and you get red urls, just add the urls to your hosts file and you'll be golden. Google it (or ask ChatGPT). 
 
 Secondly, you may get the red url on ws-laravel.lndo.site. This is because the config is for a proxy url. It works with laravel-websockets (even when red) BUT it causes a short hang when building with lando as it waits for the url to timeout. 
 If you're not using websockets, comment it out and you'll get a speedy lando build and a clean sweep of green urls. 
 
 Readme written retrospectively
 ------------------------------
-This readme was written retrospectively so I'm probably missing a few bits and pieces but feel free to let me know. 
+This readme was written retrospectively so I'm probably missing a few bits and pieces but feel free to let me know and I'll rectify. Thanks. 
