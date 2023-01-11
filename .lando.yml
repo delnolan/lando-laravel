@@ -1,0 +1,48 @@
+name: laravel
+services:
+  phpmyadminservice:
+    type: phpmyadmin
+    hosts:
+      - mysql57
+  mysql57:
+    type: mysql:5.7
+    portforward: true
+  appservice:
+    type: php
+    webroot: docroot
+    via: apache
+    build_as_root: 
+      - 'a2enmod headers'
+      - 'a2enmod proxy'
+      - 'a2enmod proxy_http'
+      - 'service apache2 restart'
+    run_as_root:
+      - 'apt update -y && apt install -y supervisor && touch /etc/supervisor/conf.d/websockets.conf && echo "[program:websockets]" > /etc/supervisor/conf.d/websockets.conf && echo "command=/usr/local/bin/php /app/docroot/artisan websockets:serve" >> /etc/supervisor/conf.d/websockets.conf && echo "numprocs=1" >> /etc/supervisor/conf.d/websockets.conf && echo "autostart=true" >> /etc/supervisor/conf.d/websockets.conf && echo "autorestart=true" >> /etc/supervisor/conf.d/websockets.conf  && echo "redirect_stderr=true" >> /etc/supervisor/conf.d/websockets.conf && echo "stdout_logfile=/app/worker.log" >> /etc/supervisor/conf.d/websockets.conf && service supervisor stop && service supervisor start && supervisorctl stop websockets && supervisorctl start websockets'
+    config:
+      vhosts: config/default.conf
+      php: config/php.ini
+  node:
+    type: node
+
+proxy:
+  phpmyadminservice:
+    - pma.laravel.lndo.site
+  appservice:
+    - wp.laravel.lndo.site
+    - app.laravel.lndo.site
+    - ws-laravel.lndo.site
+
+tooling:
+  php:
+    service: appservice
+  composer:
+    service: appservice
+  npm:
+    service: node
+  node:
+    service: node
+  gulp:
+    service: node
+  yarn:
+    service: node
+bindAddress: "0.0.0.0"
